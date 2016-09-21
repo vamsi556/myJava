@@ -1,15 +1,89 @@
+apply plugin: 'war' 
+apply plugin: 'java' 
 apply plugin: 'eclipse'
-apply plugin: 'java'
- 
-repositories {
-    mavenCentral()
+
+sourceCompatibility='1.6'
+
+    repositories {
+    	mavenLocal()
+       	mavenCentral()
+    }
+
+	ext {
+         springVersion = "4.1.0.RELEASE"
+         hibernateVersion = "4.1.4.Final"
+	}
+
+jar{
+ baseName="vm-web"
+ version = "1.0"
+from '${helpRootDir}/${helpDir}'
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-   
-dependencies {
-    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
-    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2' 
-    testCompile 'junit:junit:4.12'
+war{
+rootSpec.exclude('**/*.java')
+rootSpec.exclude('**/*.class')
+rootSpec.exclude('com/**')
 }
+
+task collectJars(type: Copy) {
+    into "$buildDir/output/lib"
+    from configurations.runtime
+}
+
+    dependencies {
+    providedCompile fileTree(dir: 'lib', includes: ['*.jar'])
+    providedCompile "org.springframework:spring-context:$springVersion"
+    providedCompile "org.springframework:spring-tx:$springVersion"
+    providedCompile "org.springframework:spring-orm:$springVersion"
+    providedCompile "org.springframework:spring-core:$springVersion"
+    providedCompile 'org.springframework.security:spring-security-core:3.2.1.RELEASE'
+    
+    providedCompile "org.springframework:spring-beans:$springVersion"
+    providedCompile "org.springframework:spring-aop:$springVersion"
+    providedCompile "org.springframework:spring-expression:$springVersion"
+    providedCompile "org.springframework:spring-jdbc:$springVersion"
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'         
+    providedCompile 'javax.servlet:jstl:1.2'
+    providedCompile 'asm:asm-all:3.3.1'
+    providedCompile 'asm:asm-attrs:2.2.3'
+    providedCompile 'org.springframework:spring-webmvc:4.0.0.RELEASE'
+
+    providedCompile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
+    providedCompile "org.hibernate:hibernate-core:$hibernateVersion"
+    compile 'org.hibernate:hibernate-ehcache:4.1.4.Final'
+    
+    providedCompile "mysql:mysql-connector-java:5.1.31"
+    
+    providedCompile "org.javatuples:javatuples:1.2"
+    providedCompile "commons-lang:commons-lang:2.6"
+ 	providedCompile 'org.jdom:jdom:1.1'
+ 	
+ 	providedCompile 'org.slf4j:slf4j-api:1.6.1'
+    providedCompile 'ch.qos.logback:logback-core:1.1.1'
+    providedCompile 'ch.qos.logback:logback-classic:1.1.1'
+    providedCompile 'ch.qos.logback:logback-access:1.1.1'
+    providedCompile 'joda-time:joda-time:2.3'
+    
+    providedCompile 'org.apache.httpcomponents:httpclient:4.1.2'
+    providedCompile 'org.apache.httpcomponents:httpclient-cache:4.1.2'
+    providedCompile 'org.apache.httpcomponents:httpcore:4.1.2'
+    providedCompile 'org.apache.httpcomponents:httpmime:4.1.2'
+    providedCompile 'org.slf4j:log4j-over-slf4j:1.6.6'
+    providedCompile 'commons-pool:commons-pool:1.3'
+    providedCompile 'commons-dbcp:commons-dbcp:1.4'
+    providedCompile 'bsh:bsh:2.0b4'
+    
+    providedCompile 'com.itextpdf:itextpdf:5.4.5'
+    
+    providedCompile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+    providedCompile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.3.0'
+    providedCompile 'com.thoughtworks.xstream:xstream:1.4.3'
+    
+    providedCompile 'com.zaxxer:HikariCP-java6:2.0.1'
+    providedCompile 'commons-httpclient:commons-httpclient:3.1'
+    testCompile "org.springframework:spring-test:$springVersion"
+    testCompile "junit:junit:4.11"
+    
+    providedCompile 'mysql:mysql-connector-java:5.1.30'
+    }
