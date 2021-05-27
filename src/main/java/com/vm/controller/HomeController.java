@@ -16,8 +16,8 @@ public class HomeController {
 	 * this method return page
 	 * */
 	@RequestMapping(value="/info")
-	public String Home(){
-		logger.debug("home is calling");
+	public String Home(){e
+		logger.debug("home is calling sanjda");
 		return "home";
 	}
 	
